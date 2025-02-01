@@ -9,21 +9,29 @@ pub fn collider_detect_world(
     for collision_event in collision_events.read() {
         match collision_event {
             CollisionEvent::Started(e1, e2, flags) => {
-                // Check first entity
-                if let Ok((mut velocity, _transform)) = query.get_mut(*e1) {
-                    velocity.x = 0.;
-                    velocity.y = 0.;
-                    velocity.z = 0.;
+                  // Handle both entities in collision
+                  if let Ok((mut velocity1, _)) = query.get_mut(*e1) {
+                    // Stop all movement
+                    velocity1.x = 0.0;
+                    velocity1.y = 0.0;
+                    velocity1.z = 0.0;
                 }
-                // Check second entity
-                if let Ok((mut velocity, _transform)) = query.get_mut(*e2) {
-                    velocity.x = 0.;
-                    velocity.y = 0.;
-                    velocity.z = 0.;
-                }
-                // println!("Collision started between entities {:?} and {:?} -- {:?}", e1, e2,flags);
+                
+                 println!("Collision started between entities {:?} and {:?} -- {:?}", e1, e2,flags);
             }
             CollisionEvent::Stopped(e1, e2, flags) => {
+                
+                // Reset velocity when collision stops
+                if let Ok((mut velocity, _)) = query.get_mut(*e1) {
+                    velocity.x = 0.;
+                    velocity.y = 0.;
+                    velocity.z = 0.;
+                }
+                if let Ok((mut velocity, _)) = query.get_mut(*e2) {
+                    velocity.x = 0.;
+                    velocity.y = 0.;
+                    velocity.z = 0.;
+                }
                 println!(
                     "Collision stopped between entities {:?} and {:?} -- {:?}",
                     e1, e2, flags
