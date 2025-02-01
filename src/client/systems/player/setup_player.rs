@@ -35,8 +35,8 @@ pub struct PlayerBundle {
     collision_types: ActiveCollisionTypes,
     active_events: ActiveEvents,
     damping: Damping,
-    friction: Friction,
-    restitution: Restitution,
+    // friction: Friction,
+    // restitution: Restitution,
 }
 
 // Le player instancie les camera comme enfant
@@ -75,14 +75,14 @@ fn spawn_player(commands: &mut Commands) -> Entity {
                 linear_damping: 1.0,
                 angular_damping: 1.0,
             },
-            friction: Friction {
-                coefficient: 0.0,
-                combine_rule: CoefficientCombineRule::Min,
-            },
-            restitution: Restitution {
-                coefficient: 0.0,
-                combine_rule: CoefficientCombineRule::Min,
-            },
+            // friction: Friction {
+            //     coefficient: 0.0,
+            //     combine_rule: CoefficientCombineRule::Min,
+            // },
+            // restitution: Restitution {
+            //     coefficient: 0.0,
+            //     combine_rule: CoefficientCombineRule::Min,
+            // },
         })
         .id()
 }
