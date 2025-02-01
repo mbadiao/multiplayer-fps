@@ -43,15 +43,22 @@ fn main() {
 
 fn handle_app_exit(mut exit_events: EventReader<AppExit>, network_ressource: Res<NetworkResource>) {
     for _ in exit_events.read() {
+        print!("momom");
         let socket = &network_ressource.socket;
         let encode = bincode::serialize(&Message::Leave).unwrap();
-        let runtime = Runtime::new().unwrap();
-        runtime.block_on(send_quit_message(socket, encode));
+        // Use blocking to ensure message is sent
+        std::thread::spawn(move || {
+            let runtime = Runtime::new().unwrap();
+            if let Err(e) = runtime.block_on(send_quit_message(socket, encode)) {
+                eprintln!("Failed to send quit message: {}", e);
+            }
+            // Add small delay to ensure message is sent
+            std::thread::sleep(std::time::Duration::from_millis(100));
+        }).join().unwrap();
     }
 }
 
-async fn send_quit_message(socket: &Arc<UdpSocket>, encode: Vec<u8>) {
-    if let Err(e) = socket.send(&encode).await {
-        eprint!("{e}");
-    };
+async fn send_quit_message(socket: &Arc<UdpSocket>, encode: Vec<u8>) -> Result<(), std::io::Error> {
+    socket.send(&encode).await?;
+    Ok(())
 }
