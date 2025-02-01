@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::{CollisionEvent, ContactForceEvent, ExternalForce, LockedAxes};
+use bevy_rapier3d::prelude::{CollisionEvent, ContactForceEvent, ExternalForce, LockedAxes, Damping};
 use crate::client::components::player_component::Velocity;
 
 // pub fn collider_detect_world(
@@ -19,22 +19,24 @@ use crate::client::components::player_component::Velocity;
 //     }
 // }
 
+
 pub fn collider_detect_world(
     mut collision_events: EventReader<CollisionEvent>,
-    mut query: Query<(&mut Velocity, &mut ExternalForce, &mut LockedAxes)>,
+    mut query: Query<(&mut Velocity, &mut ExternalForce, &mut Damping)>,
 ) {
     for collision_event in collision_events.read() {
+        println!("Collision detected: {:?}", collision_event);
         match collision_event {
-            CollisionEvent::Started(e1, e2, _) => {
-                if let Ok((mut velocity, mut force, mut locked_axes)) = query.get_mut(*e1) {
+            CollisionEvent::Started(e1, _, _) => {
+                if let Ok((mut velocity, mut force, mut damping)) = query.get_mut(*e1) {
                     velocity.0 = Vec3::ZERO;
                     force.force = Vec3::ZERO;
-                    *locked_axes = LockedAxes::TRANSLATION_LOCKED;
+                    damping.linear_damping = 10.0; // Increase damping when colliding
                 }
-            }
+            },
             CollisionEvent::Stopped(e1, _, _) => {
-                if let Ok((_, _, mut locked_axes)) = query.get_mut(*e1) {
-                    *locked_axes = LockedAxes::ROTATION_LOCKED; // Re-enable movement if needed
+                if let Ok((_, _, mut damping)) = query.get_mut(*e1) {
+                    damping.linear_damping = 1.0; // Restore normal movement
                 }
             }
         }

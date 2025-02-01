@@ -63,9 +63,10 @@ fn spawn_player(commands: &mut Commands) -> Entity {
             ),
             global_transform: GlobalTransform::default(),
             visibility: Visibility::default(),
-            collider: Collider::cuboid(0.01, 0.01, 0.01),
+            collider: Collider::cuboid(0.3, 0.6, 0.3), // Adjust as needed
             // collider: Collider::ball(0.1),
-            rigid_body: RigidBody::Dynamic,
+            // rigid_body: RigidBody::Dynamic,
+            rigid_body: RigidBody::KinematicPositionBased,
             gravity_scale: GravityScale(0.0),
             locked_axes: LockedAxes::ROTATION_LOCKED,
             collision_types: ActiveCollisionTypes::DYNAMIC_STATIC,
