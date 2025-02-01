@@ -40,7 +40,7 @@ pub fn handle_network_messages(network: Res<NetworkResource>) {
                     Message::Join { name } => {
                         info!("{} a rejoint le serveur", name);
                     },
-                    Message::Leave => {
+                    Message::Leave  => {
                         info!("Un joueur a quitté le serveur");
                     }
                 }
