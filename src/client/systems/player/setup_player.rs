@@ -18,11 +18,11 @@ use crate::client::{
 use super::view_model_player::spawn_view_model;
 
 #[derive(Bundle)]
-struct PlayerBundle {
+pub struct PlayerBundle {
     player: Player,
     camera_sensitivity: CameraSensitivity,
     accumulated_input: AccumulatedInput,
-    velocity: Velocity,
+    pub velocity: Velocity,
     physical_translation: PhysicalTranslation,
     previous_physical_translation: PreviousPhysicalTranslation,
     transform: Transform,
@@ -63,7 +63,8 @@ fn spawn_player(commands: &mut Commands) -> Entity {
             ),
             global_transform: GlobalTransform::default(),
             visibility: Visibility::default(),
-            collider: Collider::ball(0.1),
+            collider: Collider::cuboid(0.01, 0.01, 0.01),
+            // collider: Collider::ball(0.1),
             rigid_body: RigidBody::Dynamic,
             gravity_scale: GravityScale(0.0),
             locked_axes: LockedAxes::ROTATION_LOCKED,
