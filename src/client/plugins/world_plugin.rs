@@ -9,7 +9,8 @@ use crate::client::{
     systems::{
         light_system::spawn_light,
         world::{
-            collider_detect_world::collider_detect_world, load_json_world::load_maze_from_json,
+            collider_detect_world::{collider_detect_world, debug_collisions},
+            load_json_world::load_maze_from_json,
             models_world::spawn_world_model,
         },
     },
@@ -28,6 +29,7 @@ impl Plugin for WorldPlugin {
                 Startup,
                 (load_maze_from_json, spawn_world_model, spawn_light).chain(),
             )
-            .add_systems(Update, collider_detect_world);
+            .add_systems(Update, collider_detect_world)
+            .add_systems(Update, debug_collisions);
     }
 }

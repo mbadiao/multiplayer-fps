@@ -1,6 +1,6 @@
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::{CollisionEvent, ContactForceEvent, ExternalForce, LockedAxes, Damping};
-use crate::client::components::player_component::Velocity;
+use bevy_rapier3d::prelude::{CollidingEntities, CollisionEvent, ContactForceEvent, Damping, ExternalForce, LockedAxes};
+use crate::client::components::player_component::{Player, Velocity};
 
 // pub fn collider_detect_world(
 //     mut collision_events: EventReader<CollisionEvent>,
@@ -38,6 +38,18 @@ pub fn collider_detect_world(
                 if let Ok((_, _, mut damping)) = query.get_mut(*e1) {
                     damping.linear_damping = 1.0; // Restore normal movement
                 }
+            }
+        }
+    }
+}
+
+pub fn debug_collisions(query: Query<&CollidingEntities, With<Player>>) {
+    for colliding in query.iter() {
+        if colliding.is_empty() {
+            println!("Le joueur ne touche rien.");
+        } else {
+            for entity in colliding.iter() {
+                println!("Collision avec l'entité {:?}", entity);
             }
         }
     }
