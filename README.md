@@ -129,3 +129,5 @@ Résumé des tâches pour l’équipe
 - Développeur C : Graphisme et rendu (HUD, mini-carte, caméra).
 - Développeur D : Intégration et tests (synchronisation client-serveur, fluidité).
 ## Avec cette approche, vous pouvez avancer efficacement tout en garantissant une architecture maintenable et évolutive.
+
+[drive assets](https://drive.google.com/drive/folders/1z8VZv3aCziesocR3_6-HBNd8VNLD9gaP?usp=drive_link)
